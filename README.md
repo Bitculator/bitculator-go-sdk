@@ -1,5 +1,8 @@
 # Bitculator Data API — Go SDK
 
+[bitculator.com](https://bitculator.com) · [API documentation](https://bitculator.com/en/documentation/api/v1) · [Get an API key](https://bitculator.com/user/developer/api)
+[pkg.go.dev](https://pkg.go.dev/github.com/bitculator/bitculator-go-sdk) · [GitHub](https://github.com/Bitculator/bitculator-go-sdk)
+
 The official Go SDK for the [Bitculator Data API](https://bitculator.com).
 Standard-library only (zero dependencies), context-aware, Go 1.23+.
 
