@@ -8,7 +8,7 @@ import (
 )
 
 // Version of the SDK, sent in the User-Agent header.
-const Version = "1.0.0"
+const Version = "1.0.1"
 
 const defaultBaseURL = "https://bitculator.com"
 

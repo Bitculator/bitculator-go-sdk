@@ -38,7 +38,9 @@ type TimeoutError struct {
 	Err  error
 }
 
-func (e *TimeoutError) Error() string { return fmt.Sprintf("bitculator: request to %s timed out", e.Path) }
+func (e *TimeoutError) Error() string {
+	return fmt.Sprintf("bitculator: request to %s timed out", e.Path)
+}
 func (e *TimeoutError) Unwrap() error { return e.Err }
 
 // DecodeError is returned when a 2xx response body cannot be decoded into the

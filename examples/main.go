@@ -3,6 +3,7 @@
 package main
 
 import (
+	"cmp"
 	"context"
 	"encoding/json"
 	"errors"
@@ -15,7 +16,7 @@ import (
 func main() {
 	client := bitculator.New(
 		os.Getenv("BITCULATOR_API_KEY"),
-		bitculator.WithBaseURL(getenvDefault("BITCULATOR_BASE_URL", "https://bitculator.com")),
+		bitculator.WithBaseURL(cmp.Or(os.Getenv("BITCULATOR_BASE_URL"), "https://bitculator.com")),
 	)
 	ctx := context.Background()
 
@@ -58,13 +59,6 @@ func main() {
 	}
 
 	fmt.Printf("quota: %+v\n", client.Quota())
-}
-
-func getenvDefault(key, fallback string) string {
-	if v := os.Getenv(key); v != "" {
-		return v
-	}
-	return fallback
 }
 
 func fail(err error) {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"iter"
+	"maps"
 )
 
 // PageMeta is the Laravel paginator metadata on every paginated list response.
@@ -49,9 +50,9 @@ func (p *Page) Next(ctx context.Context) (*Page, error) {
 	if !p.HasMore() {
 		return nil, nil
 	}
-	params := Params{}
-	for k, v := range p.params {
-		params[k] = v
+	params := maps.Clone(p.params)
+	if params == nil {
+		params = Params{}
 	}
 	params["page"] = p.Meta.CurrentPage + 1
 	return p.c.page(ctx, p.path, params)

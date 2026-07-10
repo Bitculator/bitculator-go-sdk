@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"math/rand"
+	"math/rand/v2"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -213,7 +213,7 @@ func encodeParams(params Params) string {
 				continue
 			}
 			parts := make([]string, rv.Len())
-			for i := 0; i < rv.Len(); i++ {
+			for i := range rv.Len() {
 				parts[i] = paramString(rv.Index(i).Interface())
 			}
 			values.Set(key, strings.Join(parts, ","))
@@ -263,25 +263,15 @@ func retryDelay(h http.Header, attempt int) time.Duration {
 	if secs, err := strconv.Atoi(h.Get("Retry-After")); err == nil && secs > 0 {
 		// Cap the honored Retry-After at 60s: a misbehaving proxy must not
 		// block a synchronous call for an hour.
-		if secs > 60 {
-			secs = 60
-		}
-		return time.Duration(secs) * time.Second
+		return time.Duration(min(secs, 60)) * time.Second
 	}
 	return backoff(attempt)
 }
 
 // backoff is exponential with jitter, capped at 8s.
 func backoff(attempt int) time.Duration {
-	shift := attempt
-	if shift > 20 {
-		shift = 20
-	}
-	ms := 250 * (1 << shift)
-	if ms > 8000 {
-		ms = 8000
-	}
-	return time.Duration(ms+rand.Intn(100)) * time.Millisecond
+	ms := min(250*(1<<min(attempt, 20)), 8000)
+	return time.Duration(ms+rand.IntN(100)) * time.Millisecond
 }
 
 func sleep(ctx context.Context, d time.Duration) error {
