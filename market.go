@@ -37,7 +37,9 @@ func (r *Sentiment) Vote(ctx context.Context, slug, vote string) (json.RawMessag
 	return r.c.post(ctx, "/api/v1/coins/"+enc(slug)+"/votes", map[string]any{"vote": vote})
 }
 
-// FearGreed returns the Fear & Greed index. Params: coin.
+// FearGreed returns the Fear & Greed index. Params: coin. Each reading carries
+// "index" (0-100, as shown on Bitculator; use it for display) and the raw
+// "score" (-100..+100).
 func (r *Sentiment) FearGreed(ctx context.Context, params Params) (json.RawMessage, error) {
 	return r.c.get(ctx, "/api/v1/sentiment/fear-greed", params)
 }

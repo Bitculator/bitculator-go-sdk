@@ -103,7 +103,8 @@ func (r *Calculators) ProfitLoss(ctx context.Context, params Params) (json.RawMe
 
 // CompoundInterest runs the compound interest calculator. Params: principal,
 // rate, duration, duration_unit, compound_frequency, contribution,
-// contribution_frequency.
+// contribution_frequency. "rate" is the annual nominal rate in %; each
+// compounding period earns "rate" divided by the periods per year.
 func (r *Calculators) CompoundInterest(ctx context.Context, params Params) (json.RawMessage, error) {
 	return r.c.get(ctx, "/api/v1/calculators/compound-interest", params)
 }
